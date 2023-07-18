@@ -1,6 +1,43 @@
 .container {
+    width: 100vw;
+    height: 100vh;
 }
 
 .container > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     background-image: linear-gradient(180deg, #0c0505 0%, #3a3535 47.92%, #5e5858 100%);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 1350px;
+    height: calc(100vh - 132px - 97px);
+}
+
+.title-play-list {
+    align-self: flex-start;
+    margin: 70px 0 24px 0;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.cards-musics {
+    display: flex;
+    justify-content: space-between;
+
+    width: 1350px;
+
+    border-top: 1px solid #6a6363;
 }
