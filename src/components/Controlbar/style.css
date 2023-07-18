@@ -1,0 +1,76 @@
+.container-controlbar {
+    display: flex;
+    justify-content: flex-start;
+
+    width: 100vw;
+    height: 132px;
+
+    background-image: linear-gradient(180deg, #383535 0%, rgba(133, 130, 130, 0) 100%);
+}
+
+.current-music {
+    display: flex;
+    flex-direction: column;
+
+    width: 220px;
+
+    margin: 24px 0 0 32px;
+}
+
+.current-music h3 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.current-music span {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    margin-right: 252px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+
+    margin-right: 90px;
+}
+
+.progressbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 12px;
+}
+
+.progressbar span {
+    margin: 0px 8px;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #ccc3c3;
+}
+
+.progressbar input {
+    width: 560px;
+    height: 4px;
+}

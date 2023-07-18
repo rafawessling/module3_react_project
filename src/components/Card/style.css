@@ -5,6 +5,8 @@
 
     width: 320px;
     margin-top: 16px;
+
+    cursor: pointer;
 }
 
 .cover {
