@@ -56,6 +56,19 @@ function App() {
         }
     }
 
+    function handleStopMusic() {
+        console.log('entrei');
+        if (isPlaying) {
+            audioRef.current.pause();
+
+            audioRef.current.src = '';
+
+            setCurrentMusic({ id: 0, artist: '', title: '', url: '' });
+
+            setIsPlaying(false);
+        }
+    }
+
     return (
         <div className="container">
             <Header />
@@ -74,6 +87,7 @@ function App() {
                 artist={currentMusic.artist}
                 isPlaying={isPlaying}
                 togglePlayPause={togglePlayPause}
+                handleStopMusic={handleStopMusic}
             />
             <audio ref={audioRef} />
         </div>
