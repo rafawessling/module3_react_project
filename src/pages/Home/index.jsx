@@ -11,6 +11,12 @@ function App() {
     const [musicsData, setMusicsData] = useState([...musics]);
     // eslint-disable-next-line
     const [isPlaying, setIsPlaying] = useState(false);
+    const [currentMusic, setCurrentMusic] = useState({
+        id: 0,
+        artist: '',
+        title: '',
+        url: '',
+    });
 
     function setMusic(selectedMusic) {
         if (isPlaying) {
@@ -34,6 +40,22 @@ function App() {
         setIsPlaying(true);
     }
 
+    function togglePlayPause() {
+        if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+            return;
+        }
+
+        if (audioRef.current.paused) {
+            if (currentMusic.id) {
+                audioRef.current.play();
+                setIsPlaying(true);
+                return;
+            }
+        }
+    }
+
     return (
         <div className="container">
             <Header />
@@ -47,7 +69,12 @@ function App() {
                     ))}
                 </div>
             </main>
-            <Controlbar title={currentMusic.title} artist={currentMusic.artist} isPlaying={isPlaying} />
+            <Controlbar
+                title={currentMusic.title}
+                artist={currentMusic.artist}
+                isPlaying={isPlaying}
+                togglePlayPause={togglePlayPause}
+            />
             <audio ref={audioRef} />
         </div>
     );
