@@ -13,6 +13,8 @@
     width: 292px;
     height: 64px;
     margin-left: 32px;
+
+    cursor: pointer;
 }
 
 .perfil {
@@ -27,6 +29,8 @@
 
     border-radius: 50%;
     border: 2px solid #6a6363;
+
+    cursor: pointer;
 }
 
 .perfil span {
@@ -35,4 +39,6 @@
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 700;
+
+    cursor: pointer;
 }
