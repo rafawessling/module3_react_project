@@ -5,7 +5,15 @@ import Previous from '../../assets/previous.svg';
 import Stop from '../../assets/stop.svg';
 import './style.css';
 
-export default function Controlbar({ title, artist, isPlaying, togglePlayPause, handlePrevMusic, handleStopMusic }) {
+export default function Controlbar({
+    title,
+    artist,
+    isPlaying,
+    togglePlayPause,
+    handlePrevMusic,
+    handleNextMusic,
+    handleStopMusic,
+}) {
     return (
         <>
             <section className="container-controlbar">
@@ -18,7 +26,7 @@ export default function Controlbar({ title, artist, isPlaying, togglePlayPause, 
                         <img src={Stop} alt="" onClick={() => handleStopMusic()} />
                         <img src={Previous} alt="" onClick={() => handlePrevMusic()} />
                         <img src={isPlaying ? Pause : Play} alt="" onClick={() => togglePlayPause()} />
-                        <img src={Next} alt="" />
+                        <img src={Next} alt="" onClick={() => handleNextMusic()} />
                     </div>
                     <div className="progressbar">
                         <span>00:00</span>

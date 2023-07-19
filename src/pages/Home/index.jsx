@@ -82,6 +82,31 @@ function App() {
         }
     }
 
+    function handleNextMusic() {
+        let nextMusic = {};
+
+        if (currentMusic === musicsData[musicsData.length - 1]) {
+            nextMusic = musicsData[0];
+
+            setCurrentMusic(nextMusic);
+
+            audioRef.current.src = nextMusic.url;
+            audioRef.current.play();
+
+            setIsPlaying(true);
+        } else {
+            const index = musicsData.indexOf(currentMusic);
+
+            nextMusic = musicsData[index + 1];
+            setCurrentMusic(nextMusic);
+
+            audioRef.current.src = nextMusic.url;
+            audioRef.current.play();
+
+            setIsPlaying(true);
+        }
+    }
+
     function handleStopMusic() {
         console.log('entrei');
         if (isPlaying) {
@@ -114,6 +139,7 @@ function App() {
                 isPlaying={isPlaying}
                 togglePlayPause={togglePlayPause}
                 handlePrevMusic={handlePrevMusic}
+                handleNextMusic={handleNextMusic}
                 handleStopMusic={handleStopMusic}
             />
             <audio ref={audioRef} />
