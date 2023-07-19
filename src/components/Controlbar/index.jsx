@@ -13,6 +13,7 @@ export default function Controlbar({
     handlePrevMusic,
     handleNextMusic,
     handleStopMusic,
+    isStopped,
 }) {
     return (
         <>
@@ -30,8 +31,8 @@ export default function Controlbar({
                     </div>
                     <div className="progressbar">
                         <span>00:00</span>
-                        <input className="progress" type="range" />
-                        <span>03:34</span>
+                        <input className="slider" type="range" />
+                        <span>00:00</span>
                     </div>
                 </div>
             </section>

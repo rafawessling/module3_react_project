@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Card from '../../components/Card/index.jsx';
 import Controlbar from '../../components/Controlbar';
 import Header from '../../components/Header';
@@ -7,9 +7,8 @@ import './style.css';
 
 function App() {
     const audioRef = useRef(null);
-
-    const [musicsData, setMusicsData] = useState([...musics]);
     // eslint-disable-next-line
+    const [musicsData, setMusicsData] = useState([...musics]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentMusic, setCurrentMusic] = useState({
         id: 0,
@@ -17,106 +16,71 @@ function App() {
         title: '',
         url: '',
     });
+    // eslint-disable-next-line
+    const [isStopped, setIsStopped] = useState(false);
 
     function setMusic(selectedMusic) {
-        if (isPlaying) {
-            if (audioRef.current.src === selectedMusic.url) {
-                audioRef.current.pause();
-                setIsPlaying(false);
-                return;
-            } else {
-                audioRef.current.play();
-                setIsPlaying(true);
-                return;
-            }
+        if (isPlaying && audioRef.current.src === selectedMusic.url) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            setCurrentMusic(selectedMusic);
+            audioRef.current.src = selectedMusic.url;
+            audioRef.current.play();
+            setIsPlaying(true);
         }
-
-        setCurrentMusic(selectedMusic);
-
-        audioRef.current.src = selectedMusic.url;
-
-        audioRef.current.play();
-
-        setIsPlaying(true);
     }
 
     function togglePlayPause() {
         if (isPlaying) {
             audioRef.current.pause();
             setIsPlaying(false);
-            return;
-        }
-
-        if (audioRef.current.paused) {
-            if (currentMusic.id) {
-                audioRef.current.play();
-                setIsPlaying(true);
-                return;
-            }
+        } else if (currentMusic.id) {
+            audioRef.current.play();
+            setIsPlaying(true);
         }
     }
 
     function handlePrevMusic() {
-        let prevMusic = {};
+        const index = musicsData.indexOf(currentMusic);
+        const prevMusic = index === 0 ? musicsData[musicsData.length - 1] : musicsData[index - 1];
 
-        if (currentMusic === musicsData[0]) {
-            prevMusic = musicsData[musicsData.length - 1];
-
-            setCurrentMusic(prevMusic);
-
-            audioRef.current.src = prevMusic.url;
-
-            audioRef.current.play();
-
-            setIsPlaying(true);
-        } else {
-            const index = musicsData.indexOf(currentMusic);
-
-            prevMusic = musicsData[index - 1];
-            setCurrentMusic(prevMusic);
-
-            audioRef.current.src = prevMusic.url;
-            audioRef.current.play();
-
-            setIsPlaying(true);
-        }
+        audioRef.current.src = prevMusic.url;
+        audioRef.current.play();
+        setCurrentMusic(prevMusic);
+        setIsPlaying(true);
     }
 
     function handleNextMusic() {
-        let nextMusic = {};
+        const index = musicsData.indexOf(currentMusic);
+        const nextMusic = index === musicsData.length - 1 ? musicsData[0] : musicsData[index + 1];
 
-        if (currentMusic === musicsData[musicsData.length - 1]) {
-            nextMusic = musicsData[0];
-
-            setCurrentMusic(nextMusic);
-
-            audioRef.current.src = nextMusic.url;
-            audioRef.current.play();
-
-            setIsPlaying(true);
-        } else {
-            const index = musicsData.indexOf(currentMusic);
-
-            nextMusic = musicsData[index + 1];
-            setCurrentMusic(nextMusic);
-
-            audioRef.current.src = nextMusic.url;
-            audioRef.current.play();
-
-            setIsPlaying(true);
-        }
+        audioRef.current.src = nextMusic.url;
+        audioRef.current.play();
+        setCurrentMusic(nextMusic);
+        setIsPlaying(true);
     }
 
     function handleStopMusic() {
-        console.log('entrei');
-        if (isPlaying) {
+        if (isPlaying || audioRef.current.paused) {
             audioRef.current.pause();
-
             audioRef.current.src = '';
 
             setCurrentMusic({ id: 0, artist: '', title: '', url: '' });
-
             setIsPlaying(false);
+            setIsStopped(true);
+        }
+    }
+
+    function handleEndedMusic() {
+        const index = musicsData.indexOf(currentMusic);
+
+        if (index + 1 < musicsData.length) {
+            const nextMusic = musicsData[index + 1];
+            setCurrentMusic(nextMusic);
+            audioRef.current.src = nextMusic.url;
+            audioRef.current.play();
+            setIsPlaying(true);
         }
     }
 
@@ -141,8 +105,9 @@ function App() {
                 handlePrevMusic={handlePrevMusic}
                 handleNextMusic={handleNextMusic}
                 handleStopMusic={handleStopMusic}
+                isStopped={isStopped}
             />
-            <audio ref={audioRef} />
+            <audio ref={audioRef} autoPlay="autoplay" onEnded={handleEndedMusic} />
         </div>
     );
 }
