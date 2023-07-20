@@ -16,22 +16,24 @@ function App() {
         title: '',
         url: '',
     });
-    // eslint-disable-next-line
     const [isStopped, setIsStopped] = useState(false);
     const [duration, setDuration] = useState('00:00');
     const [currentTime, setCurrentTime] = useState(0);
     const [currentPosition, setCurrentPosition] = useState(0);
 
-    function setMusic(selectedMusic) {
-        if (isPlaying && audioRef.current.src === selectedMusic.url) {
-            audioRef.current.pause();
-            setIsPlaying(false);
+    function toggleMusic(url) {
+        if (audioRef.current.src === url) {
+            togglePlayPause();
         } else {
-            setCurrentMusic(selectedMusic);
-            audioRef.current.src = selectedMusic.url;
+            audioRef.current.src = url;
             audioRef.current.play();
             setIsPlaying(true);
         }
+    }
+
+    function setMusic(selectedMusic) {
+        setCurrentMusic(selectedMusic);
+        toggleMusic(selectedMusic.url);
     }
 
     function togglePlayPause() {
@@ -41,27 +43,30 @@ function App() {
         } else if (currentMusic.id) {
             audioRef.current.play();
             setIsPlaying(true);
+        } else {
+            setCurrentMusic(musicsData[0]);
+            toggleMusic(musicsData[0].url);
         }
     }
 
     function handlePrevMusic() {
-        const index = musicsData.indexOf(currentMusic);
-        const prevMusic = index === 0 ? musicsData[musicsData.length - 1] : musicsData[index - 1];
+        if (currentMusic.id) {
+            const index = musicsData.indexOf(currentMusic);
+            const prevMusic = index === 0 ? musicsData[musicsData.length - 1] : musicsData[index - 1];
 
-        audioRef.current.src = prevMusic.url;
-        audioRef.current.play();
-        setCurrentMusic(prevMusic);
-        setIsPlaying(true);
+            setCurrentMusic(prevMusic);
+            toggleMusic(prevMusic.url);
+        }
     }
 
     function handleNextMusic() {
-        const index = musicsData.indexOf(currentMusic);
-        const nextMusic = index === musicsData.length - 1 ? musicsData[0] : musicsData[index + 1];
+        if (currentMusic.id) {
+            const index = musicsData.indexOf(currentMusic);
+            const nextMusic = index === musicsData.length - 1 ? musicsData[0] : musicsData[index + 1];
 
-        audioRef.current.src = nextMusic.url;
-        audioRef.current.play();
-        setCurrentMusic(nextMusic);
-        setIsPlaying(true);
+            setCurrentMusic(nextMusic);
+            toggleMusic(nextMusic.url);
+        }
     }
 
     function handleStopMusic() {
@@ -81,9 +86,7 @@ function App() {
         const nextMusic = index + 1 === musics.length ? musicsData[0] : musicsData[index + 1];
 
         setCurrentMusic(nextMusic);
-        audioRef.current.src = nextMusic.url;
-        audioRef.current.play();
-        setIsPlaying(true);
+        toggleMusic(nextMusic.url);
     }
 
     function handleLoadMetaData() {
@@ -105,22 +108,21 @@ function App() {
             const minCurr = String(Math.floor(timeMusic / 60)).padStart(2, '0');
             const secCurr = String(Math.floor(timeMusic % 60)).padStart(2, '0');
             const formattedCurrentTime = `${minCurr}:${secCurr}`;
-
             setCurrentTime(formattedCurrentTime);
 
             const totalDuration = audioRef.current.duration;
             const sliderPosition = (timeMusic / totalDuration) * 100;
             setCurrentPosition(sliderPosition);
-        }, 1000);
+        }, 0);
     }, [currentMusic]);
 
     function handleSlider(event) {
         const position = event.target.value;
+        setCurrentPosition(position);
+
         const totalDuration = audioRef.current.duration;
         const positionTime = (position / 100) * totalDuration;
-
         audioRef.current.currentTime = positionTime;
-        setCurrentPosition(position);
     }
 
     return (
