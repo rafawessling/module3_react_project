@@ -33,7 +33,7 @@ export default function Controlbar({
                     <h3>{title}</h3>
                     <span>{artist}</span>
                 </div>
-                <div className="control">
+                <section className="control">
                     <div className="buttons">
                         <img src={Stop} alt="" onClick={() => handleStopMusic()} />
                         <img src={Previous} alt="" onClick={() => handlePrevMusic()} />
@@ -54,10 +54,20 @@ export default function Controlbar({
                         />
                         <span>{title ? duration : '00:00'}</span>
                     </div>
-                </div>
-                <div className="volume">
+                </section>
+                <section className="volume">
                     <img
-                        src={volume < 0.01 ? Mute : volume >= 0.7 ? VolumeUp : volume >= 0.3 ? Volume : VolumeDown}
+                        src={
+                            !isStopped
+                                ? volume < 0.01
+                                    ? Mute
+                                    : volume >= 0.7
+                                    ? VolumeUp
+                                    : volume >= 0.3
+                                    ? Volume
+                                    : VolumeDown
+                                : Mute
+                        }
                         alt=""
                         defaultValue={Volume}
                         onClick={() => {
@@ -72,16 +82,16 @@ export default function Controlbar({
                         min={0}
                         max={1}
                         step={0.05}
-                        value={isPlaying ? volume : 0}
+                        value={!isStopped ? volume : 0}
                         onChange={handleVolume}
                         disabled={isStopped}
                         style={{
-                            background: `linear-gradient(to right, ${isPlaying ? '#E5007B' : '#CCC3C3'} ${
+                            background: `linear-gradient(to right, ${!isStopped ? '#E5007B' : '#CCC3C3'} ${
                                 volume * 100
                             }%, #CCC3C3 ${volume * 100}%)`,
                         }}
                     />
-                </div>
+                </section>
             </section>
         </>
     );

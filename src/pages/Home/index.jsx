@@ -29,12 +29,14 @@ function App() {
             audioRef.current.src = url;
             audioRef.current.play();
             setIsPlaying(true);
+            setIsStopped(false);
         }
     }
 
     function setMusic(selectedMusic) {
         setCurrentMusic(selectedMusic);
         toggleMusic(selectedMusic.url);
+        setIsStopped(false);
     }
 
     function togglePlayPause() {
@@ -44,6 +46,7 @@ function App() {
         } else if (currentMusic.id) {
             audioRef.current.play();
             setIsPlaying(true);
+            setIsStopped(false);
         } else if (!isStopped) {
             setCurrentMusic(musicsData[0]);
             toggleMusic(musicsData[0].url);
@@ -90,7 +93,7 @@ function App() {
         toggleMusic(nextMusic.url);
     }
 
-    function handleLoadMetaData() {
+    function handleTotalDuration() {
         const totalDuration = audioRef.current.duration;
         const minTotal = String(Math.floor(totalDuration / 60)).padStart(2, '0');
         const secTotal = String(Math.floor(totalDuration % 60)).padStart(2, '0');
@@ -99,20 +102,26 @@ function App() {
         setDuration(formattedDuration);
     }
 
+    function handleCurrentTime() {
+        const timeMusic = audioRef.current.currentTime;
+        const minCurr = String(Math.floor(timeMusic / 60)).padStart(2, '0');
+        const secCurr = String(Math.floor(timeMusic % 60)).padStart(2, '0');
+        const formattedCurrentTime = `${minCurr}:${secCurr}`;
+        setCurrentTime(formattedCurrentTime);
+
+        // Change the slider position with the current time
+        const totalDuration = audioRef.current.duration;
+        const sliderPosition = (timeMusic / totalDuration) * 100;
+        setCurrentPosition(sliderPosition);
+    }
+
     useEffect(() => {
         setInterval(() => {
-            const timeMusic = audioRef.current.currentTime;
-            const minCurr = String(Math.floor(timeMusic / 60)).padStart(2, '0');
-            const secCurr = String(Math.floor(timeMusic % 60)).padStart(2, '0');
-            const formattedCurrentTime = `${minCurr}:${secCurr}`;
-            setCurrentTime(formattedCurrentTime);
+            handleCurrentTime();
+        }, 1000);
+    }, [currentTime]);
 
-            const totalDuration = audioRef.current.duration;
-            const sliderPosition = (timeMusic / totalDuration) * 100;
-            setCurrentPosition(sliderPosition);
-        }, 0);
-    }, [currentMusic]);
-
+    // Change the slider position with the onChange event on the progress bar
     function handleSlider(event) {
         const position = event.target.value;
         setCurrentPosition(position);
@@ -141,42 +150,46 @@ function App() {
     }
 
     return (
-        <div className="container">
-            <Header />
+        <article className="container">
+            <section className="header">
+                <Header />
+            </section>
             <main>
                 <h2 className="title-play-list">The best playlist</h2>
-                <div className="cards-musics">
+                <section className="cards-musics">
                     {musicsData.map(music => (
                         <div key={music.id} onClick={() => setMusic(music)}>
                             <Card cover={music.cover} title={music.title} description={music.description} />
                         </div>
                     ))}
-                </div>
+                </section>
             </main>
-            <Controlbar
-                title={currentMusic.title}
-                artist={currentMusic.artist}
-                isPlaying={isPlaying}
-                togglePlayPause={togglePlayPause}
-                handlePrevMusic={handlePrevMusic}
-                handleNextMusic={handleNextMusic}
-                handleStopMusic={handleStopMusic}
-                isStopped={isStopped}
-                currentTime={currentTime}
-                duration={duration}
-                currentPosition={currentPosition}
-                handleSlider={event => handleSlider(event)}
-                handleVolume={event => handleVolume(event)}
-                volume={volume}
-                handleMute={handleMute}
-            />
+            <section className="controlbar">
+                <Controlbar
+                    title={currentMusic.title}
+                    artist={currentMusic.artist}
+                    isPlaying={isPlaying}
+                    togglePlayPause={togglePlayPause}
+                    handlePrevMusic={handlePrevMusic}
+                    handleNextMusic={handleNextMusic}
+                    handleStopMusic={handleStopMusic}
+                    isStopped={isStopped}
+                    currentTime={currentTime}
+                    duration={duration}
+                    currentPosition={currentPosition}
+                    handleSlider={event => handleSlider(event)}
+                    handleVolume={event => handleVolume(event)}
+                    volume={volume}
+                    handleMute={handleMute}
+                />
+            </section>
             <audio
                 ref={audioRef}
                 autoPlay="autoplay"
-                onLoadedMetadata={handleLoadMetaData}
+                onLoadedMetadata={handleTotalDuration}
                 onEnded={handleEndedMusic}
             />
-        </div>
+        </article>
     );
 }
 

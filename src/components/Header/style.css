@@ -3,10 +3,8 @@
     justify-content: space-between;
     align-items: center;
 
-    width: 100vw;
+    width: 1700px;
     height: 97px;
-
-    border-bottom: 1px solid #6a6363;
 }
 
 .logo-image {
