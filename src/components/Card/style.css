@@ -9,6 +9,10 @@
     cursor: pointer;
 }
 
+.container-card:hover {
+    scale: 1.05;
+}
+
 .cover {
     width: 320px;
     height: 320px;

@@ -35,7 +35,11 @@ main {
     justify-content: space-between;
     flex-wrap: wrap;
 
-    width: 1350px;
+    width: 1360px;
 
     border-top: 1px solid #6a6363;
+}
+
+.cards-musics:hover div:not(:hover) {
+    opacity: 0.7;
 }
