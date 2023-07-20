@@ -39,8 +39,6 @@
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-
-    margin-right: 252px;
 }
 
 .buttons {
@@ -77,15 +75,12 @@
     color: #ccc3c3;
 }
 
-.progressbar input {
+.slider {
+    -webkit-appearance: none;
     width: 560px;
     height: 4px;
 
     cursor: pointer;
-}
-
-.slider {
-    -webkit-appearance: none;
 }
 
 .slider::-webkit-slider-thumb {
@@ -94,5 +89,26 @@
     height: 12px;
     border-radius: 50%;
     background: #e5007b;
+    cursor: pointer;
+}
+
+.volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    width: 220px;
+}
+
+.volume img {
+    width: 40px;
+
+    cursor: pointer;
+}
+
+.volume-bar {
+    width: 100px;
+
     cursor: pointer;
 }

@@ -18,8 +18,9 @@ function App() {
     });
     const [isStopped, setIsStopped] = useState(false);
     const [duration, setDuration] = useState('00:00');
-    const [currentTime, setCurrentTime] = useState(0);
+    const [currentTime, setCurrentTime] = useState('00:00');
     const [currentPosition, setCurrentPosition] = useState(0);
+    const [volume, setVolume] = useState(1);
 
     function toggleMusic(url) {
         if (audioRef.current.src === url) {
@@ -43,7 +44,7 @@ function App() {
         } else if (currentMusic.id) {
             audioRef.current.play();
             setIsPlaying(true);
-        } else {
+        } else if (!isStopped) {
             setCurrentMusic(musicsData[0]);
             toggleMusic(musicsData[0].url);
         }
@@ -99,10 +100,6 @@ function App() {
     }
 
     useEffect(() => {
-        handleLoadMetaData();
-    }, [currentMusic]);
-
-    useEffect(() => {
         setInterval(() => {
             const timeMusic = audioRef.current.currentTime;
             const minCurr = String(Math.floor(timeMusic / 60)).padStart(2, '0');
@@ -123,6 +120,24 @@ function App() {
         const totalDuration = audioRef.current.duration;
         const positionTime = (position / 100) * totalDuration;
         audioRef.current.currentTime = positionTime;
+    }
+
+    function handleVolume(event) {
+        const volumeValue = event.currentTarget.valueAsNumber;
+        setVolume(volumeValue);
+        audioRef.current.volume = volumeValue;
+    }
+
+    function handleMute() {
+        if (audioRef.current) {
+            if (audioRef.current.volume !== 0) {
+                audioRef.current.volume = 0;
+                setVolume(0);
+            } else {
+                audioRef.current.volume = 1;
+                setVolume(1);
+            }
+        }
     }
 
     return (
@@ -151,6 +166,9 @@ function App() {
                 duration={duration}
                 currentPosition={currentPosition}
                 handleSlider={event => handleSlider(event)}
+                handleVolume={event => handleVolume(event)}
+                volume={volume}
+                handleMute={handleMute}
             />
             <audio
                 ref={audioRef}
