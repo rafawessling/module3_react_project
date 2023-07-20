@@ -18,6 +18,9 @@ function App() {
     });
     // eslint-disable-next-line
     const [isStopped, setIsStopped] = useState(false);
+    const [duration, setDuration] = useState('00:00');
+    const [currentTime, setCurrentTime] = useState(0);
+    const [currentPosition, setCurrentPosition] = useState(0);
 
     function setMusic(selectedMusic) {
         if (isPlaying && audioRef.current.src === selectedMusic.url) {
@@ -68,20 +71,56 @@ function App() {
 
             setCurrentMusic({ id: 0, artist: '', title: '', url: '' });
             setIsPlaying(false);
+            setCurrentPosition(0);
             setIsStopped(true);
         }
     }
 
     function handleEndedMusic() {
         const index = musicsData.indexOf(currentMusic);
+        const nextMusic = index + 1 === musics.length ? musicsData[0] : musicsData[index + 1];
 
-        if (index + 1 < musicsData.length) {
-            const nextMusic = musicsData[index + 1];
-            setCurrentMusic(nextMusic);
-            audioRef.current.src = nextMusic.url;
-            audioRef.current.play();
-            setIsPlaying(true);
-        }
+        setCurrentMusic(nextMusic);
+        audioRef.current.src = nextMusic.url;
+        audioRef.current.play();
+        setIsPlaying(true);
+    }
+
+    function handleLoadMetaData() {
+        const totalDuration = audioRef.current.duration;
+        const minTotal = String(Math.floor(totalDuration / 60)).padStart(2, '0');
+        const secTotal = String(Math.floor(totalDuration % 60)).padStart(2, '0');
+        const formattedDuration = `${minTotal}:${secTotal}`;
+
+        setDuration(formattedDuration);
+    }
+
+    useEffect(() => {
+        handleLoadMetaData();
+    }, [currentMusic]);
+
+    useEffect(() => {
+        setInterval(() => {
+            const timeMusic = audioRef.current.currentTime;
+            const minCurr = String(Math.floor(timeMusic / 60)).padStart(2, '0');
+            const secCurr = String(Math.floor(timeMusic % 60)).padStart(2, '0');
+            const formattedCurrentTime = `${minCurr}:${secCurr}`;
+
+            setCurrentTime(formattedCurrentTime);
+
+            const totalDuration = audioRef.current.duration;
+            const sliderPosition = (timeMusic / totalDuration) * 100;
+            setCurrentPosition(sliderPosition);
+        }, 1000);
+    }, [currentMusic]);
+
+    function handleSlider(event) {
+        const position = event.target.value;
+        const totalDuration = audioRef.current.duration;
+        const positionTime = (position / 100) * totalDuration;
+
+        audioRef.current.currentTime = positionTime;
+        setCurrentPosition(position);
     }
 
     return (
@@ -106,8 +145,17 @@ function App() {
                 handleNextMusic={handleNextMusic}
                 handleStopMusic={handleStopMusic}
                 isStopped={isStopped}
+                currentTime={currentTime}
+                duration={duration}
+                currentPosition={currentPosition}
+                handleSlider={event => handleSlider(event)}
             />
-            <audio ref={audioRef} autoPlay="autoplay" onEnded={handleEndedMusic} />
+            <audio
+                ref={audioRef}
+                autoPlay="autoplay"
+                onLoadedMetadata={handleLoadMetaData}
+                onEnded={handleEndedMusic}
+            />
         </div>
     );
 }

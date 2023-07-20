@@ -14,6 +14,10 @@ export default function Controlbar({
     handleNextMusic,
     handleStopMusic,
     isStopped,
+    currentTime,
+    duration,
+    currentPosition,
+    handleSlider,
 }) {
     return (
         <>
@@ -30,9 +34,18 @@ export default function Controlbar({
                         <img src={Next} alt="" onClick={() => handleNextMusic()} />
                     </div>
                     <div className="progressbar">
-                        <span>00:00</span>
-                        <input className="slider" type="range" />
-                        <span>00:00</span>
+                        <span>{title ? currentTime : '00:00'}</span>
+                        <input
+                            className="slider"
+                            type="range"
+                            value={currentPosition}
+                            onChange={handleSlider}
+                            disabled={isStopped}
+                            style={{
+                                background: `linear-gradient(to right, #E5007B ${currentPosition}%, #CCC3C3 ${currentPosition}%)`,
+                            }}
+                        />
+                        <span>{title ? duration : '00:00'}</span>
                     </div>
                 </div>
             </section>
