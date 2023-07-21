@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Card from '../../components/Card/index.jsx';
 import Controlbar from '../../components/Controlbar';
 import Header from '../../components/Header';
@@ -17,39 +17,33 @@ function App() {
         url: '',
     });
     const [isStopped, setIsStopped] = useState(false);
-    const [duration, setDuration] = useState('00:00');
-    const [currentTime, setCurrentTime] = useState('00:00');
+    const [duration, setDuration] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
     const [currentPosition, setCurrentPosition] = useState(0);
     const [volume, setVolume] = useState(1);
 
-    function toggleMusic(url) {
-        if (audioRef.current.src === url) {
+    function setStateMusic(music) {
+        setCurrentMusic(music);
+
+        if (audioRef.current.src === music.url) {
             togglePlayPause();
         } else {
-            audioRef.current.src = url;
+            audioRef.current.src = music.url;
             audioRef.current.play();
-            setIsPlaying(true);
-            setIsStopped(false);
         }
     }
 
-    function setMusic(selectedMusic) {
-        setCurrentMusic(selectedMusic);
-        toggleMusic(selectedMusic.url);
-        setIsStopped(false);
+    function selectMusic(music) {
+        setStateMusic(music);
     }
 
     function togglePlayPause() {
         if (isPlaying) {
             audioRef.current.pause();
-            setIsPlaying(false);
         } else if (currentMusic.id) {
             audioRef.current.play();
-            setIsPlaying(true);
-            setIsStopped(false);
         } else if (!isStopped) {
-            setCurrentMusic(musicsData[0]);
-            toggleMusic(musicsData[0].url);
+            setStateMusic(musicsData[0]);
         }
     }
 
@@ -57,9 +51,7 @@ function App() {
         if (currentMusic.id) {
             const index = musicsData.indexOf(currentMusic);
             const prevMusic = index === 0 ? musicsData[musicsData.length - 1] : musicsData[index - 1];
-
-            setCurrentMusic(prevMusic);
-            toggleMusic(prevMusic.url);
+            setStateMusic(prevMusic);
         }
     }
 
@@ -67,19 +59,14 @@ function App() {
         if (currentMusic.id) {
             const index = musicsData.indexOf(currentMusic);
             const nextMusic = index === musicsData.length - 1 ? musicsData[0] : musicsData[index + 1];
-
-            setCurrentMusic(nextMusic);
-            toggleMusic(nextMusic.url);
+            setStateMusic(nextMusic);
         }
     }
 
     function handleStopMusic() {
         if (isPlaying || audioRef.current.paused) {
             audioRef.current.pause();
-            audioRef.current.src = '';
-
-            setCurrentMusic({ id: 0, artist: '', title: '', url: '' });
-            setIsPlaying(false);
+            audioRef.current.currentTime = 0;
             setCurrentPosition(0);
             setIsStopped(true);
         }
@@ -88,9 +75,7 @@ function App() {
     function handleEndedMusic() {
         const index = musicsData.indexOf(currentMusic);
         const nextMusic = index + 1 === musics.length ? musicsData[0] : musicsData[index + 1];
-
-        setCurrentMusic(nextMusic);
-        toggleMusic(nextMusic.url);
+        setStateMusic(nextMusic);
     }
 
     function handleTotalDuration() {
@@ -98,7 +83,6 @@ function App() {
         const minTotal = String(Math.floor(totalDuration / 60)).padStart(2, '0');
         const secTotal = String(Math.floor(totalDuration % 60)).padStart(2, '0');
         const formattedDuration = `${minTotal}:${secTotal}`;
-
         setDuration(formattedDuration);
     }
 
@@ -115,13 +99,7 @@ function App() {
         setCurrentPosition(sliderPosition);
     }
 
-    useEffect(() => {
-        setInterval(() => {
-            handleCurrentTime();
-        }, 1000);
-    }, [currentTime]);
-
-    // Change the slider position with the onChange event on the progress bar
+    // Change the slider position and currentTime with the onChange event on the progress bar
     function handleSlider(event) {
         const position = event.target.value;
         setCurrentPosition(position);
@@ -133,8 +111,8 @@ function App() {
 
     function handleVolume(event) {
         const volumeValue = event.currentTarget.valueAsNumber;
-        setVolume(volumeValue);
         audioRef.current.volume = volumeValue;
+        setVolume(volumeValue);
     }
 
     function handleMute() {
@@ -158,7 +136,7 @@ function App() {
                 <h2 className="title-play-list">The best playlist</h2>
                 <section className="cards-musics">
                     {musicsData.map(music => (
-                        <div key={music.id} onClick={() => setMusic(music)}>
+                        <div key={music.id} onClick={() => selectMusic(music)}>
                             <Card cover={music.cover} title={music.title} description={music.description} />
                         </div>
                     ))}
@@ -188,6 +166,10 @@ function App() {
                 autoPlay="autoplay"
                 onLoadedMetadata={handleTotalDuration}
                 onEnded={handleEndedMusic}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onTimeUpdate={() => handleCurrentTime()}
+                onDurationChange={() => handleTotalDuration()}
             />
         </article>
     );
