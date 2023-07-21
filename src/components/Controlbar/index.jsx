@@ -78,7 +78,7 @@ export default function Controlbar({
                         step={0.05}
                         value={title ? volume : 1}
                         onChange={handleVolume}
-                        disabled={isStopped}
+                        disabled={isStopped || !title}
                         style={{
                             background: `linear-gradient(to right, #E5007B ${volume * 100}%, #CCC3C3 ${volume * 100}%)`,
                         }}

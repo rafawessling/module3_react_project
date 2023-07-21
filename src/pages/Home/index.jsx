@@ -24,6 +24,7 @@ function App() {
 
     function setStateMusic(music) {
         setCurrentMusic(music);
+        setIsStopped(false);
 
         if (audioRef.current.src === music.url) {
             togglePlayPause();
@@ -42,6 +43,7 @@ function App() {
             audioRef.current.pause();
         } else if (currentMusic.id) {
             audioRef.current.play();
+            setIsStopped(false);
         } else if (!isStopped) {
             setStateMusic(musicsData[0]);
         }
