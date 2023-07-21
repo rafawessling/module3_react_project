@@ -1,65 +1,142 @@
-![](https://i.imgur.com/xG74tOh.png)
+<p align="center">
+    <img src="./src/assets/header-readme.png">
+</p>
 
-# Aula prática de React - Cubos Player
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/rafawessling/module3_react_project?color=%2304D361">
 
-Essa aula prática consiste em desenvolver um player de músicas, para isso você usará o layout figma que se encontra nesse [link](https://www.figma.com/file/2RRh9uG0Mjj6p4p6ekVnNp/Cubos-Player?node-id=0%3A1).
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/rafawessling/module3_react_project">
+  
+  <a href="https://github.com/rafawessling/module3_react_project/commits/main">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rafawessling/module3_react_project">
+  </a>
 
-Caso você queira importar o arquivo do figma no seu computador, ele está nessa pasta com o nome `Cubos Player.fig`
+   <a href="https://www.linkedin.com/in/rafaela-wessling/">
+    <img alt="Feito por Rafaela Wessling" src="https://img.shields.io/badge/created-by%20Rafaela%20Wessling%20Oening-D818A5">
+   </a>
+</p>
 
-Os detalhes do que você precisará desenvolver está nos vídeos introdutórios da aula...
+<p align="center">
+    <img src="./src/assets/logo.svg">
+</p>
 
-... mas o layout que você irá encontrar no figma é esse:
+<p align="center">
+    <img src="./src/assets/project.png">
+</p>
 
-![](https://i.imgur.com/kU1nrcS.png)
+> This project consists of developing a music player using _React, JavaScript, HTML, and CSS_.
+> It is based on the following layout on <a href="https://www.figma.com/file/2RRh9uG0Mjj6p4p6ekVnNp/Cubos-Player?node-id=0%3A1" target="_blank">Figma</a>.
 
----
+-   The project is available on this <a href="https://cubos-player.onrender.com" target="_blank">link</a>.
 
-### Requisitos obrigatórios
+> To begin with, choose the song you want to listen to or click on the play button to start by the first song on the playlist.
+> Use the buttons to stop, play the previous song, pause or play, and play the next song, respectively.
+> Utilize the bar and the icon on the bottom right to control the volume or mute the song.
 
--   [ ] Quando clicar na imagem de uma música, a música deve ser iniciada;
--   [ ] Deve mostrar no player o nome e o artista da música que está tocando;
--   [ ] Se pressionar no botão de pause, a música deve parar;
--   [ ] Se pressionar novamente no botão de pause, a música deve continuar;
--   [ ] Se pressionar o botão de avançar, trocar para a próxima música;
--   [ ] Se pressionar o botão de retroceder, trocar para a música anterior;
--   [ ] Se pressionar o botão de parar, parar de tocar a música;
--   [ ] Fazer o layout o mais fiel possível com a proposta do figma, porém, você pode fazer alguns ajustes pessoais se quiser, para deixar o projeto mais com sua cara;
+##
 
----
+### Index
 
-### Requisitos opcionais
+1. [About the project](#about)
+2. [How to execute](#how-to-execute)
+3. [Technologies](#technologies)
+4. [Author](#author)
+5. [License](#license)
 
--   [ ] Calcular e mostrar o tempo restante da música de acordo com a música que está tocando;
--   [ ] Fazer a barra de progresso da música;
--   [ ] Se pressionar o botão de avançar e segurar, avançar no tempo da música;
--   [ ] Se pressionar o botão de retroceder e segurar, retroceder no tempo da música;
+##
 
----
+<div id='about'></div>
 
-### Dicas
+### 1. About the project
 
-Não sabe por onde começar? Que tal começar olhando o que já existe dentro do projeto, após isso pense no projeto final e defina pequenas tarefas para chegar a esse resultado.
+This project was developed during the Full Stack Software Development course at <a href="https://github.com/cubos-academy" target="_blank">@cubosacademy</a>.
+It was bootstrapped with <a href="https://create-react-app.dev/" target="_blank">Create React App</a>.
 
-No exercício será necessário:
+##
 
--   Criar e manipular estado
--   Criar e manipular referências
--   Utilizar eventos de clique
--   Passar propriedades
--   Importar imagens
--   Executar uma ação várias vezes de tempo em tempo
--   Importar dados do arquivo json
--   Procurar itens
+<div id='how-to-execute'></div>
 
-As duas aulas anteriores são as mais importantes para você conseguir desenvolver esse projeto.
+### 2. How to execute
 
----
+-   Firstly, install the following tools: <a href="https://git-scm.com" target="_blank">Git</a>, <a href="https://nodejs.org/en/" target="_blank">Node.js</a>.
 
-Preencha a checklist para fazer os exercícios:
+-   Clone this repository:
 
--   [ ] Fazer o fork do repositório para sua conta
--   [ ] Executar `git clone` do seu fork no terminal para clonar o repositório, ou clonar de outra maneira
--   [ ] Após fazer e commitar todos os exercícios fazer o `git push` para seu fork
--   [ ] Copiar a url do seu fork e enviar na plataforma
+    ```
+    $ git clone git@github.com:rafawessling/module3_react_project.git
+    ```
 
-###### tags: `módulo 3` `front-end` `React`
+-   Access the project folder on the terminal/cmd:
+    ```
+    $ cd module3_react_project
+    ```
+-   Install the dependencies:
+    ```
+    $ npm install
+    ```
+-   Execute the application:
+
+    ```
+    $ npm start
+    ```
+
+    The server will run on port: 3000 → Access: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>.
+
+##
+
+<div id='technologies'></div>
+
+### 3. Technologies
+
+In this project, the following technologies are used:
+
+##### Website:
+
+-   React
+-   JavaScript
+-   Node
+-   HTML
+-   CSS
+
+##### Utility:
+
+-   Git and GitHub
+-   Figma
+-   Editor: Visual Studio Code
+-   Fonts: Roboto, Rubik
+
+##
+
+<div id='author'></div>
+
+### 4. Author
+
+👩🏼‍💻 <a href="https://www.linkedin.com/in/rafaela-wessling/" target="_blank">Rafaela Wessling Oening</a>
+
+-   **How to contribute to the project:**
+
+1. _Fork_ the project;
+2. Create a _new branch_:
+    ```
+    $ git checkout -b my-feature
+    ```
+3. Save your changes and _commit_ it:
+    ```
+    $ git commit -m "feat: Added new feature"
+    ```
+4. _Submit_:
+    ```
+    $ git push origin my-feature
+    ```
+
+##
+
+<div id='license'></div>
+
+### 5. License
+
+Developed by Rafaela Wessling Oening. <a href="https://www.linkedin.com/in/rafaela-wessling/" target="_blank">Reach out!</a>
+
+##
+
+###### tags: `module 3` `front-end` `React`
