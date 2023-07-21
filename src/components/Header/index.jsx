@@ -6,9 +6,17 @@ export default function Header() {
     return (
         <>
             <section className="container-header">
-                <img className="logo-image" src={Logo} alt="" />
+                <img
+                    className="logo-image"
+                    src={Logo}
+                    alt="Website logo with the word CUBOS and a play icon in white plus the word PLAYER pink"
+                />
                 <div className="perfil">
-                    <img className="profile-image" src={Profile} alt="" />
+                    <img
+                        className="profile-image"
+                        src={Profile}
+                        alt="A light background with a white blond woman with long hair and"
+                    />
                     <span>Welcome, Rafaela.</span>
                 </div>
             </section>

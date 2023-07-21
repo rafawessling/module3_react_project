@@ -1,12 +1,12 @@
 import Next from '../../assets/next.svg';
-import Play from '../../assets/play.svg';
 import Pause from '../../assets/pause.svg';
+import Play from '../../assets/play.svg';
 import Previous from '../../assets/previous.svg';
 import Stop from '../../assets/stop.svg';
-import VolumeUp from '../../assets/volume-up.svg';
-import Volume from '../../assets/volume.svg';
 import VolumeDown from '../../assets/volume-down.svg';
 import Mute from '../../assets/volume-mute.svg';
+import VolumeUp from '../../assets/volume-up.svg';
+import Volume from '../../assets/volume.svg';
 import './style.css';
 
 export default function Controlbar({
@@ -35,13 +35,17 @@ export default function Controlbar({
                 </div>
                 <section className="control">
                     <div className="buttons">
-                        <img src={Stop} alt="" onClick={() => handleStopMusic()} />
-                        <img src={Previous} alt="" onClick={() => handlePrevMusic()} />
-                        <img src={isPlaying ? Pause : Play} alt="" onClick={() => togglePlayPause()} />
-                        <img src={Next} alt="" onClick={() => handleNextMusic()} />
+                        <img src={Stop} alt="Stop icon" onClick={() => handleStopMusic()} />
+                        <img src={Previous} alt="Previous icon" onClick={() => handlePrevMusic()} />
+                        <img
+                            src={isPlaying ? Pause : Play}
+                            alt={isPlaying ? 'Pause icon' : 'Play icon'}
+                            onClick={() => togglePlayPause()}
+                        />
+                        <img src={Next} alt="Next icon" onClick={() => handleNextMusic()} />
                     </div>
                     <div className="progressbar">
-                        <span>{title ? currentTime : '00:00'}</span>
+                        <span>{title ? currentTime : ''}</span>
                         <input
                             className="slider"
                             type="range"
@@ -52,23 +56,13 @@ export default function Controlbar({
                                 background: `linear-gradient(to right, #E5007B ${currentPosition}%, #CCC3C3 ${currentPosition}%)`,
                             }}
                         />
-                        <span>{title ? duration : '00:00'}</span>
+                        <span>{title ? duration : ''}</span>
                     </div>
                 </section>
                 <section className="volume">
                     <img
-                        src={
-                            !isStopped
-                                ? volume < 0.01
-                                    ? Mute
-                                    : volume >= 0.7
-                                    ? VolumeUp
-                                    : volume >= 0.3
-                                    ? Volume
-                                    : VolumeDown
-                                : Mute
-                        }
-                        alt=""
+                        src={volume < 0.01 ? Mute : volume >= 0.7 ? VolumeUp : volume >= 0.3 ? Volume : VolumeDown}
+                        alt={volume < 0.01 ? 'Muted icon' : 'Volume icon'}
                         defaultValue={Volume}
                         onClick={() => {
                             if (!isStopped && title) {
@@ -82,13 +76,11 @@ export default function Controlbar({
                         min={0}
                         max={1}
                         step={0.05}
-                        value={!isStopped ? volume : 0}
+                        value={title ? volume : 1}
                         onChange={handleVolume}
                         disabled={isStopped}
                         style={{
-                            background: `linear-gradient(to right, ${!isStopped ? '#E5007B' : '#CCC3C3'} ${
-                                volume * 100
-                            }%, #CCC3C3 ${volume * 100}%)`,
+                            background: `linear-gradient(to right, #E5007B ${volume * 100}%, #CCC3C3 ${volume * 100}%)`,
                         }}
                     />
                 </section>
