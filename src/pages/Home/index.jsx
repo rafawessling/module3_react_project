@@ -20,7 +20,10 @@ function App() {
     const [duration, setDuration] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     const [currentPosition, setCurrentPosition] = useState(0);
-    const [volume, setVolume] = useState(1);
+    const [volume, setVolume] = useState({
+        prevVolume: 0,
+        currVolume: 1,
+    });
 
     function setStateMusic(music) {
         setCurrentMusic(music);
@@ -31,6 +34,7 @@ function App() {
         } else {
             audioRef.current.src = music.url;
             audioRef.current.play();
+            setIsPlaying(true);
         }
     }
 
@@ -41,8 +45,10 @@ function App() {
     function togglePlayPause() {
         if (isPlaying) {
             audioRef.current.pause();
+            setIsPlaying(false);
         } else if (currentMusic.id) {
             audioRef.current.play();
+            setIsPlaying(true);
             setIsStopped(false);
         } else if (!isStopped) {
             setStateMusic(musicsData[0]);
@@ -69,6 +75,8 @@ function App() {
         if (isPlaying || audioRef.current.paused) {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
+
+            setIsPlaying(false);
             setCurrentPosition(0);
             setIsStopped(true);
         }
@@ -114,17 +122,21 @@ function App() {
     function handleVolume(event) {
         const volumeValue = event.currentTarget.valueAsNumber;
         audioRef.current.volume = volumeValue;
-        setVolume(volumeValue);
+        setVolume({ ...volume, currVolume: volumeValue });
     }
 
     function handleMute() {
         if (audioRef.current) {
             if (audioRef.current.volume !== 0) {
+                const previousVolume = audioRef.current.volume;
                 audioRef.current.volume = 0;
-                setVolume(0);
-            } else {
+                setVolume({ prevVolume: previousVolume, currVolume: 0 });
+            } else if (volume.prevVolume === 0 && volume.currVolume === 0) {
                 audioRef.current.volume = 1;
-                setVolume(1);
+                setVolume({ ...volume, currVolume: 1 });
+            } else {
+                audioRef.current.volume = volume.prevVolume;
+                setVolume({ prevVolume: 0, currVolume: audioRef.current.volume });
             }
         }
     }
@@ -168,8 +180,6 @@ function App() {
                 autoPlay="autoplay"
                 onLoadedMetadata={handleTotalDuration}
                 onEnded={handleEndedMusic}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
                 onTimeUpdate={() => handleCurrentTime()}
                 onDurationChange={() => handleTotalDuration()}
             />

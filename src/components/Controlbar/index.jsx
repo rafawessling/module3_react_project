@@ -30,8 +30,8 @@ export default function Controlbar({
         <>
             <section className="container-controlbar">
                 <div className="current-music">
-                    <h3>{title}</h3>
-                    <span>{artist}</span>
+                    <h3>{!isStopped && title}</h3>
+                    <span>{!isStopped && artist}</span>
                 </div>
                 <section className="control">
                     <div className="buttons">
@@ -45,7 +45,7 @@ export default function Controlbar({
                         <img src={Next} alt="Next icon" onClick={() => handleNextMusic()} />
                     </div>
                     <div className="progressbar">
-                        <span>{title ? currentTime : ''}</span>
+                        <span>{!isStopped && currentTime}</span>
                         <input
                             className="slider"
                             type="range"
@@ -56,14 +56,22 @@ export default function Controlbar({
                                 background: `linear-gradient(to right, #E5007B ${currentPosition}%, #CCC3C3 ${currentPosition}%)`,
                             }}
                         />
-                        <span>{title ? duration : ''}</span>
+                        <span>{!isStopped && duration}</span>
                     </div>
                 </section>
                 <section className="volume">
                     <img
-                        src={volume < 0.01 ? Mute : volume >= 0.7 ? VolumeUp : volume >= 0.3 ? Volume : VolumeDown}
-                        alt={volume < 0.01 ? 'Muted icon' : 'Volume icon'}
-                        defaultValue={Volume}
+                        src={
+                            volume.currVolume < 0.01
+                                ? Mute
+                                : volume.currVolume >= 0.7
+                                ? VolumeUp
+                                : volume.currVolume >= 0.3
+                                ? Volume
+                                : VolumeDown
+                        }
+                        alt={volume.currVolume < 0.01 ? 'Muted icon' : 'Volume icon'}
+                        defaultValue={VolumeUp}
                         onClick={() => {
                             if (!isStopped && title) {
                                 handleMute();
@@ -76,11 +84,13 @@ export default function Controlbar({
                         min={0}
                         max={1}
                         step={0.05}
-                        value={title ? volume : 1}
+                        value={title ? volume.currVolume : 1}
                         onChange={handleVolume}
                         disabled={isStopped || !title}
                         style={{
-                            background: `linear-gradient(to right, #E5007B ${volume * 100}%, #CCC3C3 ${volume * 100}%)`,
+                            background: `linear-gradient(to right, #E5007B ${volume.currVolume * 100}%, #CCC3C3 ${
+                                volume.currVolume * 100
+                            }%)`,
                         }}
                     />
                 </section>
