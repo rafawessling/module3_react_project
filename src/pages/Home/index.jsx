@@ -38,10 +38,6 @@ function App() {
         }
     }
 
-    function selectMusic(music) {
-        setStateMusic(music);
-    }
-
     function togglePlayPause() {
         if (isPlaying) {
             audioRef.current.pause();
@@ -151,7 +147,7 @@ function App() {
                 <h2 className="title-play-list">The best playlist</h2>
                 <section className="cards-musics">
                     {musicsData.map(music => (
-                        <div key={music.id} onClick={() => selectMusic(music)}>
+                        <div key={music.id} onClick={() => setStateMusic(music)}>
                             <Card cover={music.cover} title={music.title} description={music.description} />
                         </div>
                     ))}
