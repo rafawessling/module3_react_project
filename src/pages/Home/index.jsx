@@ -102,6 +102,7 @@ function App() {
         const secCurr = String(Math.floor(timeMusic % 60)).padStart(2, '0');
         const formattedCurrentTime = `${minCurr}:${secCurr}`;
         setCurrentTime(formattedCurrentTime);
+        console.log('oi');
 
         // Change the slider position with the current time
         const totalDuration = audioRef.current.duration;
@@ -180,8 +181,8 @@ function App() {
                 autoPlay="autoplay"
                 onLoadedMetadata={handleTotalDuration}
                 onEnded={handleEndedMusic}
-                onTimeUpdate={() => handleCurrentTime()}
-                onDurationChange={() => handleTotalDuration()}
+                onTimeUpdate={handleCurrentTime}
+                onDurationChange={handleTotalDuration}
             />
         </article>
     );

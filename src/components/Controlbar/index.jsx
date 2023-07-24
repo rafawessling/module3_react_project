@@ -35,14 +35,14 @@ export default function Controlbar({
                 </div>
                 <section className="control">
                     <div className="buttons">
-                        <img src={Stop} alt="Stop icon" onClick={() => handleStopMusic()} />
-                        <img src={Previous} alt="Previous icon" onClick={() => handlePrevMusic()} />
+                        <img src={Stop} alt="Stop icon" onClick={handleStopMusic} />
+                        <img src={Previous} alt="Previous icon" onClick={handlePrevMusic} />
                         <img
                             src={isPlaying ? Pause : Play}
                             alt={isPlaying ? 'Pause icon' : 'Play icon'}
-                            onClick={() => togglePlayPause()}
+                            onClick={togglePlayPause}
                         />
-                        <img src={Next} alt="Next icon" onClick={() => handleNextMusic()} />
+                        <img src={Next} alt="Next icon" onClick={handleNextMusic} />
                     </div>
                     <div className="progressbar">
                         <span>{!isStopped && currentTime}</span>
